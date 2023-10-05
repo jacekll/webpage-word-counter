@@ -1,3 +1,4 @@
+from typing import Iterable, Final
 from urllib import request
 
 
@@ -6,17 +7,31 @@ def get_page_content(url: str) -> str:
         return str(f.read())
 
 
-def strip_tags(html: str):
-    more_text = True
-    end_tag = -1
-    while more_text:
-        start_tag = html.find("<", end_tag + 1)
-        if start_tag == -1:
-            yield html[end_tag + 1:]
-            break
-        yield html[end_tag + 1:start_tag]
-        end_tag = html.find(">", start_tag + 1)
-        more_text = end_tag != -1
+def get_tag_name(tag: str) -> str:
+    end_of_name_position = min(tag.find(" "), tag.find("\n"))
+    if end_of_name_position != -1:
+        tag = tag[:end_of_name_position]
+    return tag.lower()
+
+
+def strip_tags(lines: Iterable[str]):
+    for html in lines:
+        more_text = True
+        end_tag = -1
+        while more_text:
+            start_tag = html.find("<", end_tag + 1)
+            if start_tag == -1:
+                yield html[end_tag + 1:]
+                break
+            new_end_tag = html.find(">", start_tag + 1)
+            tag = html[start_tag + 1: new_end_tag]
+            tag_name = get_tag_name(tag)
+            print(tag_name)
+            if tag_name not in {"style", "link", "script", "head", "meta", "title"}:
+                yield html[end_tag + 1:start_tag]
+                yield " "
+            end_tag = new_end_tag
+            more_text = end_tag != -1
 
 
 def strip_comments(html: str):

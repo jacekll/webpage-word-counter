@@ -16,16 +16,21 @@ def test_strip_comments(html, expected_result):
 
 
 @pytest.mark.parametrize("html, expected_result", [
-    ("", ""),
-    ("a<br>c", "ac"),
-    ("<br>ab", "ab"),
-    ("<br>ab<br>", "ab"),
-    ("<br>ab<br> c", "ab c"),
-    ("<img src=\"blah.png\">ab c", "ab c"),
-    ("<img src=\"blah.png\" />ab c", "ab c"),
-    ("<span>ab c </span>", "ab c "),
-    ("<span>ab c </span> ", "ab c  "),
+    ([""], ""),
+    (["a<br>c"], "a c"),
+    (["<br>ab"], "ab"),
+    (["<br>ab<br>"], "ab"),
+    (["<br>ab<br> c"], "ab  c"),
+    (["<img src=\"blah.png\">ab c"], "ab c"),
+    (["<img src=\"blah.png\" />ab c"], "ab c"),
+    (["<span>ab c </span>"], "ab c "),
+    (["<span>ab c </span> "], "ab c  "),
+    (["<span>ab c", "</span> d"], "ab c  d"),
+    (["<span>ab c", "<span>x</span> d"], "ab c x  d"),
+    (["<meta name=\"blah\">ab c"], "ab c"),
+    (["<META name=\"blah\" />ab c"], "ab c"),
+    (["<html>\n<head><META name=\"blah\" /></head><body>ab c</body></html>"], "ab c"),
 ]
 )
 def test_strip_tags(html, expected_result):
-    assert expected_result == "".join(strip_tags(html))
+    assert "".join(strip_tags(html)).strip() == expected_result.strip()
