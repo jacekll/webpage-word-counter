@@ -1,6 +1,6 @@
 import pytest
 
-from count_words import strip_comments, strip_tags
+from count_words import strip_comments, strip_tags, get_words
 
 
 @pytest.mark.parametrize("html, expected_result", [
@@ -34,3 +34,19 @@ def test_strip_comments(html, expected_result):
 )
 def test_strip_tags(html, expected_result):
     assert "".join(strip_tags(html)).strip() == expected_result.strip()
+
+
+@pytest.mark.parametrize("text, expected_result", [
+    ("", []),
+    (" ", []),
+    ("a", ["a"]),
+    ("a ", ["a"]),
+    (" a", ["a"]),
+    (" a ", ["a"]),
+    ("a b", ["a", "b"]),
+    ("ad bc", ["ad", "bc"]),
+    ("ad  bc ", ["ad", "bc"]),
+    ("żó  łĆ ", ["żó", "łć"]),
+])
+def test_get_words(text, expected_result):
+    assert list(get_words(text)) == expected_result

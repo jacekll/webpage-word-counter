@@ -7,6 +7,20 @@ def get_page_content(url: str) -> str:
         return str(f.read())
 
 
+def get_words(text: str) -> str:
+    start_word_index = 0
+    length = len(text)
+    while start_word_index < length:
+        while start_word_index < length and not text[start_word_index].isalpha():
+            start_word_index += 1
+        end_word_index = start_word_index
+        while end_word_index < length and text[end_word_index].isalpha():
+            end_word_index += 1
+        if end_word_index > start_word_index:
+            yield text[start_word_index:end_word_index].lower()
+        start_word_index = end_word_index
+
+
 def get_tag_name(tag: str) -> str:
     end_of_name_position = min(tag.find(" "), tag.find("\n"))
     if end_of_name_position != -1:
