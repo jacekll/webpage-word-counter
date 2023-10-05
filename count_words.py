@@ -7,6 +7,14 @@ def get_page_content(url: str) -> str:
         return str(f.read())
 
 
+def count_words(words: Iterable[str]):
+    word_counts = {}
+    for word in words:
+        word_normalized = word.lower()
+        word_counts[word_normalized] = word_counts.get(word_normalized, 0) + 1
+    return word_counts
+
+
 def get_words(text: str) -> str:
     start_word_index = 0
     length = len(text)
@@ -40,7 +48,6 @@ def strip_tags(lines: Iterable[str]):
             new_end_tag = html.find(">", start_tag + 1)
             tag = html[start_tag + 1: new_end_tag]
             tag_name = get_tag_name(tag)
-            print(tag_name)
             if tag_name not in {"style", "link", "script", "head", "meta", "title"}:
                 yield html[end_tag + 1:start_tag]
                 yield " "
@@ -64,4 +71,12 @@ def strip_comments(html: str):
 
 
 if __name__ == "__main__":
-    print(get_page_content("https://www.google.pl/"))
+    print(
+        count_words(
+            strip_tags(
+                strip_comments(
+                    get_page_content("https://www.google.pl/")
+                )
+            )
+        )
+    )
