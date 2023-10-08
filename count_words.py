@@ -31,9 +31,17 @@ def get_words(text: Iterable[str]) -> str:
 
 
 def get_tag_name(tag: str) -> str:
-    end_of_name_position = min(tag.find(" "), tag.find("\n"))
+    end_of_name_position = tag.find(" ")
     if end_of_name_position != -1:
         tag = tag[:end_of_name_position]
+    else:
+        end_of_name_position = tag.find("\n")
+        if end_of_name_position != -1:
+            tag = tag[:end_of_name_position]
+        else:
+            end_of_name_position = tag.find("\t")
+            if end_of_name_position != -1:
+             tag = tag[:end_of_name_position]
     return tag.lower()
 
 
