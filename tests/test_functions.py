@@ -16,6 +16,9 @@ def test_strip_comments(html, expected_result):
 
 
 @pytest.mark.parametrize("html, expected_result", [
+    ([
+         "<script nonce=\"nzzcBJAQZz901LZCOQeOqQ\">(function(){var src='/images/nav_logo229.png';var iesg=false;document.body.onload = function(){window.n && window.n();if (document.images){new Image().src=src;}\nif (!iesg){document.f&&document.f.q.focus();document.gbqf&&document.gbqf.q.focus();}\n}\n})();</script> abc"],
+     "abc"),
     ([""], ""),
     (["a<br>c"], "a c"),
     (["<br>ab"], "ab"),
