@@ -79,13 +79,21 @@ def strip_comments(html: str):
         current_position = end_comment + 3
 
 
+def skip_doctype(text: str):
+    return text[text.find(">") + 1:]
+
+
 if __name__ == "__main__":
+    f = open('test.html', 'r')
     print(
         count_words(
-            strip_tags(
-                strip_comments(
-                    get_page_content("https://www.google.pl/")
+            get_words(
+                strip_tags(
+                    strip_comments(
+                        skip_doctype(f.read())
+                    )
                 )
             )
         )
     )
+    f.close()
