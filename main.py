@@ -40,7 +40,6 @@ class MyHTMLParser(HTMLParser):
         if data == "":
             return
         if self.closest_parent_tag not in self.NON_HUMAN_READABLE_TAGS:
-            print("Encountered some text :", data)
             self._counter.update(
                 map(
                     normalize_word,
