@@ -1,5 +1,8 @@
+import sys
 from typing import Iterable, Final
 from urllib import request
+
+from parse_string import search_for_closing_script_tag
 
 
 def get_page_content(url: str) -> str:
@@ -46,16 +49,20 @@ def get_tag_name(tag: str) -> str:
 
 
 def strip_tags(lines: Iterable[str]):
+    tag_name = None
     for html in lines:
         more_text = True
         tag_ending_pos = -1
         while more_text:
-            start_tag_pos = html.find("<", tag_ending_pos + 1)
-            if start_tag_pos == -1:
+            if tag_name == 'script':
+                start_tag_pos = search_for_closing_script_tag(html, tag_ending_pos + 1)
+            else:
+                start_tag_pos = html.find("<", tag_ending_pos + 1)
+            if tag_name is not None and start_tag_pos == -1:
                 yield html[tag_ending_pos + 1:]
                 break
             new_tag_ending_pos = html.find(">", start_tag_pos + 1)
-            tag = html[start_tag_pos + 1: new_tag_ending_pos]
+            tag = html[start_tag_pos + 1: new_tag_ending_pos].strip()
             tag_name = get_tag_name(tag)
             if tag_name.lstrip("/") not in {"style", "link", "script", "head", "meta", "title"}:
                 yield html[tag_ending_pos + 1:start_tag_pos]
@@ -84,7 +91,7 @@ def skip_doctype(text: str):
 
 
 if __name__ == "__main__":
-    f = open('test.html', 'r')
+    f = open(sys.argv[1], 'r')
     print(
         count_words(
             get_words(
