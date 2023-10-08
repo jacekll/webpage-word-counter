@@ -10,11 +10,7 @@ from html.parser import HTMLParser
 import unicodedata
 
 
-StrGenerator = Generator[str, None, None]
-
-SPLIT_WORDS_PATTERN = re.compile(r'(\W|\s)+', re.MULTILINE)
 FIND_WORDS_PATTERN = re.compile(r'\w+', re.MULTILINE)
-
 
 
 def normalize_word(word: str) -> str:
@@ -56,6 +52,7 @@ class MyHTMLParser(HTMLParser):
                     normalize_word,
                     FIND_WORDS_PATTERN.findall(text_part))
             )
+
 
 def count_human_readable_words_in_webpage(url):
     word_counter = collections.Counter()
