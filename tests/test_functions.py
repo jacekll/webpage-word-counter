@@ -37,16 +37,16 @@ def test_strip_tags(html, expected_result):
 
 
 @pytest.mark.parametrize("text, expected_result", [
-    ("", []),
-    (" ", []),
-    ("a", ["a"]),
-    ("a ", ["a"]),
-    (" a", ["a"]),
-    (" a ", ["a"]),
-    ("a b", ["a", "b"]),
-    ("ad bc", ["ad", "bc"]),
-    ("ad  bc ", ["ad", "bc"]),
-    ("żó  łĆ ", ["żó", "łć"]),
+    ([""], []),
+    ([" "], []),
+    (["a"], ["a"]),
+    (["a "], ["a"]),
+    ([" a"], ["a"]),
+    ([" a "], ["a"]),
+    (["a b"], ["a", "b"]),
+    (["ad bc"], ["ad", "bc"]),
+    (["ad  bc "], ["ad", "bc"]),
+    (["żó  łĆ "], ["żó", "łć"]),
 ])
 def test_get_words(text, expected_result):
     assert list(get_words(text)) == expected_result

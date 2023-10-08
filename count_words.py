@@ -15,18 +15,19 @@ def count_words(words: Iterable[str]):
     return word_counts
 
 
-def get_words(text: str) -> str:
-    start_word_index = 0
-    length = len(text)
-    while start_word_index < length:
-        while start_word_index < length and not text[start_word_index].isalpha():
-            start_word_index += 1
-        end_word_index = start_word_index
-        while end_word_index < length and text[end_word_index].isalpha():
-            end_word_index += 1
-        if end_word_index > start_word_index:
-            yield text[start_word_index:end_word_index].lower()
-        start_word_index = end_word_index
+def get_words(text: Iterable[str]) -> str:
+    for text_part in text:
+        start_word_index = 0
+        length = len(text_part)
+        while start_word_index < length:
+            while start_word_index < length and not text_part[start_word_index].isalpha():
+                start_word_index += 1
+            end_word_index = start_word_index
+            while end_word_index < length and text_part[end_word_index].isalpha():
+                end_word_index += 1
+            if end_word_index > start_word_index:
+                yield text_part[start_word_index:end_word_index].lower()
+            start_word_index = end_word_index
 
 
 def get_tag_name(tag: str) -> str:
