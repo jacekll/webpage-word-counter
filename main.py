@@ -1,30 +1,30 @@
-import collections
-from typing import Iterable, Tuple
+from collections import Counter
+from urllib import request
+from sys import argv
+from typing import Iterable, Tuple, Final
 
-import httpx
 import re
 from html.parser import HTMLParser
 
 import unicodedata
 
 
-FIND_WORDS_PATTERN = re.compile(r'\w+', re.MULTILINE)
+FIND_WORDS_PATTERN = re.compile(r'[^\W\d]+', re.MULTILINE)
 
 
 def normalize_word(word: str) -> str:
-    return word.lower()
+    return unicodedata.normalize('NFD', unicodedata.normalize('NFD', word).casefold())
 
 
 class MyHTMLParser(HTMLParser):
+    NON_HUMAN_READABLE_TAGS: Final[set[str]] = {"style", "link", "script", "head", "meta", "title", "html"}
     closest_parent_tag = None
     started = False
     finished = False
-    letter_pattern = re.compile(r'\w', re.MULTILINE)
 
-    def __init__(self, counter: collections.Counter, **kwargs):
+    def __init__(self, counter: Counter, **kwargs):
         super().__init__(**kwargs)
         self._counter = counter
-
 
     def handle_starttag(self, tag: str, attrs: Iterable[Tuple[str, str]]):
         if tag == 'body':
@@ -40,31 +40,26 @@ class MyHTMLParser(HTMLParser):
             return
         if data == "":
             return
-        text_part = unicodedata.normalize("NFC", data)  # https://docs.python.org/3/library/unicodedata.html#unicodedata.normalize
-        if self.letter_pattern.search(text_part) is None:
-            return
-        if self.closest_parent_tag not in {"style", "link", "script", "head", "meta", "title", "html"}:
-            print("Encountered some text :", text_part)
+        if self.closest_parent_tag not in self.NON_HUMAN_READABLE_TAGS:
+            print("Encountered some text :", data)
             self._counter.update(
                 map(
                     normalize_word,
-                    FIND_WORDS_PATTERN.findall(text_part))
+                    FIND_WORDS_PATTERN.findall(data))
             )
 
 
 def count_human_readable_words_in_webpage(url):
-    word_counter = collections.Counter()
+    word_counter = Counter()
 
     parser = MyHTMLParser(word_counter)
-    with httpx.stream("GET", url) as r:
-        for text in r.iter_text():
-            parser.feed(text)
-            if parser.finished:
-                break
+    with request.urlopen(url) as response:
+        text = response.read().decode(response.headers.get_content_charset())
+        parser.feed(text)
 
     print(f"{repr(word_counter.most_common(1000))}")
     parser.close()
 
 
 if __name__ == '__main__':
-    count_human_readable_words_in_webpage('https://www.google.pl/')
+    count_human_readable_words_in_webpage(argv[1])
