@@ -68,6 +68,5 @@ def count_human_readable_words_in_webpage(url):
     parser.close()
 
 
-
 if __name__ == '__main__':
     count_human_readable_words_in_webpage('https://www.google.pl/')
