@@ -57,7 +57,7 @@ def strip_tags(lines: Iterable[str]):
             new_end_tag = html.find(">", start_tag + 1)
             tag = html[start_tag + 1: new_end_tag]
             tag_name = get_tag_name(tag)
-            if tag_name not in {"style", "link", "script", "head", "meta", "title"}:
+            if tag_name.lstrip("/") not in {"style", "link", "script", "head", "meta", "title"}:
                 yield html[end_tag + 1:start_tag]
                 yield " "
             end_tag = new_end_tag
