@@ -48,20 +48,20 @@ def get_tag_name(tag: str) -> str:
 def strip_tags(lines: Iterable[str]):
     for html in lines:
         more_text = True
-        end_tag = -1
+        tag_ending_pos = -1
         while more_text:
-            start_tag = html.find("<", end_tag + 1)
-            if start_tag == -1:
-                yield html[end_tag + 1:]
+            start_tag_pos = html.find("<", tag_ending_pos + 1)
+            if start_tag_pos == -1:
+                yield html[tag_ending_pos + 1:]
                 break
-            new_end_tag = html.find(">", start_tag + 1)
-            tag = html[start_tag + 1: new_end_tag]
+            new_tag_ending_pos = html.find(">", start_tag_pos + 1)
+            tag = html[start_tag_pos + 1: new_tag_ending_pos]
             tag_name = get_tag_name(tag)
             if tag_name.lstrip("/") not in {"style", "link", "script", "head", "meta", "title"}:
-                yield html[end_tag + 1:start_tag]
+                yield html[tag_ending_pos + 1:start_tag_pos]
                 yield " "
-            end_tag = new_end_tag
-            more_text = end_tag != -1
+            tag_ending_pos = new_tag_ending_pos
+            more_text = tag_ending_pos != -1
 
 
 def strip_comments(html: str):
