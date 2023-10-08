@@ -8,7 +8,6 @@ from html.parser import HTMLParser
 
 import unicodedata
 
-
 FIND_WORDS_PATTERN = re.compile(r'[^\W\d]+', re.MULTILINE)
 
 
@@ -36,7 +35,7 @@ class MyHTMLParser(HTMLParser):
             self.finished = True
 
     def handle_data(self, data: str):
-        if self.started == False or self.finished == True:
+        if self.started is False or self.finished is True:
             return
         if data == "":
             return
