@@ -33,39 +33,9 @@ def test_count_words_simple(filename: str):
 
 @pytest.mark.parametrize("filename, expected_result", [
     ("test_javascript.html", {("żółć", 1)}),
-    ("test_simple_utf8.html", {
-        ('com', 1),
-        ('dla', 1),
-        ('dysk', 1),
-        ('firm', 1),
-        ('gdzie', 1),
-        ('gmail', 1),
-        ('google', 2),
-        ('grafika', 1),
-        ('głosować', 1),
-        ('historia', 1),
-        ('mapy', 1),
-        ('o', 1),
-        ('odbędą', 1),
-        ('online', 1),
-        ('października', 1),
-        ('play', 1),
-        ('prywatność', 1),
-        ('reklamuj', 1),
-        ('rozwiązania', 1),
-        ('się', 3),
-        ('sprawdź', 1),
+    ("test_simple_htmlentities.html", {
+        ('companyname', 1),
         ('szukaj', 1),
-        ('szukanie', 1),
-        ('ustawienia', 1),
-        ('warunki', 1),
-        ('wiadomości', 1),
-        ('więcej', 1),
-        ('wszystko', 1),
-        ('wybory', 1),
-        ('youtube', 1),
-        ('zaawansowane', 1),
-        ('zaloguj', 1)
     }
      ),
 ])
