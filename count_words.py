@@ -3,6 +3,7 @@ from collections import Counter
 from typing import Iterable
 from urllib import request
 
+from input_output import display_and_save_top_results
 from parse_string import search_for_closing_script_tag
 
 
@@ -60,6 +61,7 @@ def strip_tags(lines: Iterable[str]):
         tag_ending_pos = -1
         while more_text:
             if tag_name == 'script':
+                # handle incorrect unencoded "<" characters in inline scripts:
                 start_tag_pos = search_for_closing_script_tag(html, tag_ending_pos + 1)
             else:
                 start_tag_pos = html.find("<", tag_ending_pos + 1)
@@ -71,6 +73,8 @@ def strip_tags(lines: Iterable[str]):
             tag_name = get_tag_name(tag)
             if tag_name.lstrip("/") not in {"style", "link", "script", "head", "meta", "title"}:
                 yield html[tag_ending_pos + 1:start_tag_pos]
+                # all tags are treated as word boundaries, so emit a boundary character to mark a new word;
+                # TODO: inline tags could be in-word, for example "<strong>E</strong>ncyclopedia"
                 yield " "
             tag_ending_pos = new_tag_ending_pos
             more_text = tag_ending_pos != -1
@@ -96,8 +100,12 @@ def skip_doctype(text: str):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print(f"Usage: python {__file__} <url>")
+        exit(1)
+
     text = get_page_content(sys.argv[1])
-    print(
+    display_and_save_top_results(
         get_top_n_words(
             get_words(
                 strip_tags(
@@ -105,7 +113,8 @@ if __name__ == "__main__":
                         text
                     )
                 )
-            )
+            ),
+            10
         )
     )
 
