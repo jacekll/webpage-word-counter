@@ -2,6 +2,7 @@ import sys
 from collections import Counter
 from typing import Iterable
 
+from custom_types import TopNWordsResult
 from input_output import display_and_save_top_results, get_page_content
 from parse_string import search_for_closing_script_tag
 
@@ -10,7 +11,7 @@ def normalize_word(word: str):
     return word.casefold()
 
 
-def get_top_n_words(words: Iterable[str], n: int):
+def get_top_n_words(words: Iterable[str], n: int) -> TopNWordsResult:
     word_counts = Counter()
     word_counts.update(map(normalize_word, words))
     return word_counts.most_common(n)

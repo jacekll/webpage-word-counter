@@ -20,6 +20,7 @@ class Stack:
 
 
 def search_for_closing_script_tag(text: str, start_index: int) -> int:
+    """Returns the position of closing </script> or -1 if it was not found."""
     QUOTE_CHARS: Final[set[str]] = {'"', "'"}
     ESCAPE_CHAR: Final[str] = '\\'
     open_quotes = Stack()
