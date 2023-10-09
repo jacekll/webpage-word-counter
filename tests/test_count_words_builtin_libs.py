@@ -1,6 +1,6 @@
 from collections import Counter
 
-from main import MyHTMLParser
+from count_words_builtin_libs import MyHTMLParser
 
 
 def test_count_human_readable_words_in_webpage():

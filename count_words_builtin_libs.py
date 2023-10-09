@@ -1,3 +1,4 @@
+import sys
 from collections import Counter
 from urllib import request
 from sys import argv
@@ -58,4 +59,7 @@ def get_top_human_readable_words_in_webpage(url: str, n: int) -> TopNWordsResult
 
 
 if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print(f"Usage: python {__file__} <url>")
+        exit(1)
     display_and_save_top_results(get_top_human_readable_words_in_webpage(argv[1], 10))

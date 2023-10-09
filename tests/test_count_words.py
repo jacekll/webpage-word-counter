@@ -3,7 +3,7 @@ from collections import Counter
 import pytest
 
 from count_words import get_words, strip_comments, strip_tags, get_top_n_words
-from main import MyHTMLParser
+from count_words_builtin_libs import MyHTMLParser
 
 
 @pytest.mark.parametrize("filename", [
