@@ -1,6 +1,5 @@
 import sys
 from collections import Counter
-from urllib import request
 from sys import argv
 from typing import Iterable, Tuple, Final
 
