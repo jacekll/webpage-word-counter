@@ -7,7 +7,7 @@ import re
 from html.parser import HTMLParser
 
 from custom_types import TopNWordsResult
-from input_output import display_and_save_top_results
+from input_output import display_and_save_top_results, get_page_content
 
 FIND_WORDS_PATTERN = re.compile(r'[^\W\d]+', re.MULTILINE)
 
@@ -50,11 +50,9 @@ class MyHTMLParser(HTMLParser):
 
 def get_top_human_readable_words_in_webpage(url: str, n: int) -> TopNWordsResult:
     word_counter = Counter()
-
     parser = MyHTMLParser(word_counter)
-    with request.urlopen(url) as response:
-        text = response.read().decode(response.headers.get_content_charset())
-        parser.feed(text)
+    text = get_page_content(url)
+    parser.feed(text)
     parser.close()
     return word_counter.most_common(n)
 

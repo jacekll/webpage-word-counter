@@ -1,17 +1,9 @@
 import sys
 from collections import Counter
 from typing import Iterable
-from urllib import request
 
-from input_output import display_and_save_top_results
+from input_output import display_and_save_top_results, get_page_content
 from parse_string import search_for_closing_script_tag
-
-
-def get_page_content(url: str) -> str:
-    if not (url.startswith("http://") or url.startswith("https://")):
-        raise ValueError("url should start with http:// or https:// prefix")
-    with request.urlopen(url) as response:
-        return response.read().decode(response.headers.get_content_charset())
 
 
 def normalize_word(word: str):
