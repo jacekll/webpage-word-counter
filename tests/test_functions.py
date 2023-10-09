@@ -9,6 +9,10 @@ from count_words import strip_comments, strip_tags, get_words
     ("<!-- abc -->", ""),
     ("a <!-- bc --> d", "a  d"),
     ("a <!-- bc\n--> d", "a  d"),
+    (
+            "<!doctype html><html><head></head><body> a <!-- bc\n--> d</body></html>",
+            "<!doctype html><html><head></head><body> a  d</body></html>"
+     ),
 ]
 )
 def test_strip_comments(html, expected_result):
