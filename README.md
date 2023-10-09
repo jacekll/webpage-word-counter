@@ -25,6 +25,10 @@ Both programs do not handle client-side generated content.
 
 Python 3.10+, no third-party libraries required.
 
+### Testing
+
+`pytest` is required in order to run tests.
+
 ## Possible next steps
 
 1. Handle authentication and HTTP redirects when fetching the page content
