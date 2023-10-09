@@ -1,5 +1,5 @@
 import sys
-from typing import Iterable, Final
+from typing import Iterable
 from urllib import request
 
 from parse_string import search_for_closing_script_tag
@@ -72,7 +72,7 @@ def strip_tags(lines: Iterable[str]):
 
 
 def strip_comments(html: str):
-    current_position = 0
+    current_position = skip_doctype(html)
     more_text = True
     while more_text:
         start_comment = html.find("<!--", current_position)
@@ -87,20 +87,21 @@ def strip_comments(html: str):
 
 
 def skip_doctype(text: str):
-    return text[text.find(">") + 1:]
+    return text.find(">") + 1 if text.startswith("<doctype") else 0
 
 
 if __name__ == "__main__":
-    f = open(sys.argv[1], 'r')
-    print(
-        count_words(
-            get_words(
-                strip_tags(
-                    strip_comments(
-                        skip_doctype(f.read())
+    with request.urlopen(sys.argv[1]) as response:
+        text = response.read().decode(response.headers.get_content_charset())
+        print(
+            count_words(
+                get_words(
+                    strip_tags(
+                        strip_comments(
+                            text
+                        )
                     )
                 )
             )
         )
-    )
-    f.close()
+

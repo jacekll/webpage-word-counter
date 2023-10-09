@@ -9,7 +9,7 @@ def test_count_words_simple_script():
         get_words(
             strip_tags(
                 strip_comments(
-                    skip_doctype(text)
+                    text
                 )
             )
         )
