@@ -9,9 +9,12 @@ Please see:
 2. `count_words.py` for a program not using the builtin `html.parser` library. 
    
    **Limitations:**
+
+   Please see `test_count_words_advanced()` in `tests/test_count_words.py` for details -
+
    * html entities are not parsed, therefore these are counted as words.
-   * malformed "<" and ">" characters in inline scripts are not handled properly, leading to garbled results
-   
+   * malformed "<" and ">" characters in inline scripts are not handled properly, leading to garbled results.
+     
 Both programs output data in utf-8 and handle any webpage encoding (provided that the encoding is
 declared in HTTP response headers of the webpage).
 
