@@ -13,6 +13,7 @@ FIND_WORDS_PATTERN = re.compile(r'[^\W\d]+', re.MULTILINE)
 
 
 def normalize_word(word: str) -> str:
+    """Normalizes word form to allow for comparison of corresponding words."""
     return word.casefold()
 
 
@@ -49,6 +50,7 @@ class WordCountingHTMLParser(HTMLParser):
 
 
 def get_top_human_readable_words_in_webpage(url: str, n: int) -> TopNWordsResult:
+    """Gets top n (in terms of occurences) words from human-readable content of the webpage (i.e. omitting HTML tags."""
     word_counter = Counter()
     parser = WordCountingHTMLParser(word_counter)
     text = get_page_content(url)

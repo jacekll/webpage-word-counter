@@ -17,6 +17,7 @@ def get_top_n_words(words: Iterable[str], n: int):
 
 
 def get_words(text: Iterable[str]) -> str:
+    """Splits text chunks into individual words - yielding them one-by-one."""
     for text_part in text:
         start_word_index = 0
         length = len(text_part)
@@ -47,6 +48,7 @@ def get_tag_name(tag: str) -> str:
 
 
 def strip_tags(lines: Iterable[str]):
+    """Extracts human-readable text content (skipping HTML tags), block by block, from input text chunks."""
     tag_name = None
     for html in lines:
         more_text = True
@@ -73,6 +75,7 @@ def strip_tags(lines: Iterable[str]):
 
 
 def strip_comments(html: str) -> Iterable[str]:
+    """Outputs all non-comment blocks from the HTML text one-by-one."""
     current_position = skip_doctype(html)
     more_text = True
     while more_text:
@@ -87,7 +90,8 @@ def strip_comments(html: str) -> Iterable[str]:
         current_position = end_comment + 3
 
 
-def skip_doctype(text: str):
+def skip_doctype(text: str) -> int:
+    """Returns the offset of start of HTML (omitting leading doctype declaration)."""
     return text.find(">") + 1 if text.startswith("<doctype") else 0
 
 
