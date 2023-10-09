@@ -6,8 +6,6 @@ from typing import Iterable, Tuple, Final
 import re
 from html.parser import HTMLParser
 
-import unicodedata
-
 FIND_WORDS_PATTERN = re.compile(r'[^\W\d]+', re.MULTILINE)
 
 

@@ -1,10 +1,7 @@
 import sys
 from collections import Counter
-from collections.abc import Generator
 from typing import Iterable
 from urllib import request
-
-import unicodedata
 
 from parse_string import search_for_closing_script_tag
 
