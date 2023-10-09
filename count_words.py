@@ -8,6 +8,7 @@ from string_functions import search_for_closing_script_tag, normalize_word
 
 
 def get_top_n_words(words: Iterable[str], n: int) -> TopNWordsResult:
+    """Gets top n word counts from words provided one-by-one as iterable."""
     word_counts = Counter()
     word_counts.update(map(normalize_word, words))
     return word_counts.most_common(n)
