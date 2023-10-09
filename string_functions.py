@@ -41,3 +41,8 @@ def search_for_closing_script_tag(text: str, start_index: int) -> int:
                 if open_quotes.is_empty() and text[idx:idx + 9].lower() == "</script>":
                     return idx
     return -1
+
+
+def normalize_word(word: str) -> str:
+    """Normalizes word form to allow for comparison of corresponding words."""
+    return word.casefold()

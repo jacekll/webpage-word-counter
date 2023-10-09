@@ -8,13 +8,9 @@ from html.parser import HTMLParser
 
 from custom_types import TopNWordsResult
 from input_output import display_and_save_top_results, get_page_content
+from string_functions import normalize_word
 
 FIND_WORDS_PATTERN = re.compile(r'[^\W\d]+', re.MULTILINE)
-
-
-def normalize_word(word: str) -> str:
-    """Normalizes word form to allow for comparison of corresponding words."""
-    return word.casefold()
 
 
 class WordCountingHTMLParser(HTMLParser):

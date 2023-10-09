@@ -2,7 +2,7 @@ from typing import Final
 
 import pytest
 
-from parse_string import search_for_closing_script_tag
+from string_functions import search_for_closing_script_tag
 
 COMMON_CASES: Final = [
         (""" \\'</script>' </script>""", 3),
