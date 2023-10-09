@@ -16,7 +16,7 @@ def normalize_word(word: str) -> str:
     return word.casefold()
 
 
-class MyHTMLParser(HTMLParser):
+class WordCountingHTMLParser(HTMLParser):
     NON_HUMAN_READABLE_TAGS: Final[set[str]] = {"style", "link", "script", "head", "meta", "title", "html"}
     closest_parent_tag = None
     started = False
@@ -50,7 +50,7 @@ class MyHTMLParser(HTMLParser):
 
 def get_top_human_readable_words_in_webpage(url: str, n: int) -> TopNWordsResult:
     word_counter = Counter()
-    parser = MyHTMLParser(word_counter)
+    parser = WordCountingHTMLParser(word_counter)
     text = get_page_content(url)
     parser.feed(text)
     parser.close()

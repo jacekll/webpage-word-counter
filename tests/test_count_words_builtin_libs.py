@@ -1,11 +1,11 @@
 from collections import Counter
 
-from count_words_builtin_libs import MyHTMLParser
+from count_words_builtin_libs import WordCountingHTMLParser
 
 
 def test_count_human_readable_words_in_webpage():
     word_counter = Counter()
-    parser = MyHTMLParser(word_counter)
+    parser = WordCountingHTMLParser(word_counter)
     with open('data/test_simple_htmlentities.html', 'rb') as f:
         text = f.read().decode("UTF-8")
 

@@ -3,7 +3,7 @@ from collections import Counter
 import pytest
 
 from count_words import get_words, strip_comments, strip_tags, get_top_n_words
-from count_words_builtin_libs import MyHTMLParser
+from count_words_builtin_libs import WordCountingHTMLParser
 
 
 @pytest.mark.parametrize("filename", [
@@ -25,7 +25,7 @@ def test_count_words_simple(filename: str):
     )
 
     word_counter = Counter()
-    parser = MyHTMLParser(word_counter)
+    parser = WordCountingHTMLParser(word_counter)
     parser.feed(text)
 
     assert set(result) == set(word_counter.most_common())
