@@ -12,7 +12,7 @@ FIND_WORDS_PATTERN = re.compile(r'[^\W\d]+', re.MULTILINE)
 
 
 def normalize_word(word: str) -> str:
-    return unicodedata.normalize('NFD', unicodedata.normalize('NFD', word).casefold())
+    return word.casefold()
 
 
 class MyHTMLParser(HTMLParser):

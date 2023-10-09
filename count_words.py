@@ -1,21 +1,29 @@
 import sys
+from collections import Counter
+from collections.abc import Generator
 from typing import Iterable
 from urllib import request
+
+import unicodedata
 
 from parse_string import search_for_closing_script_tag
 
 
 def get_page_content(url: str) -> str:
-    with request.urlopen(url) as f:
-        return str(f.read())
+    if not (url.startswith("http://") or url.startswith("https://")):
+        raise ValueError("url should start with http:// or https:// prefix")
+    with request.urlopen(url) as response:
+        return response.read().decode(response.headers.get_content_charset())
 
 
-def count_words(words: Iterable[str]):
-    word_counts = {}
-    for word in words:
-        word_normalized = word.lower()
-        word_counts[word_normalized] = word_counts.get(word_normalized, 0) + 1
-    return word_counts
+def normalize_word(word: str):
+    return word.casefold()
+
+
+def get_top_n_words(words: Iterable[str], n: int):
+    word_counts = Counter()
+    word_counts.update(map(normalize_word, words))
+    return word_counts.most_common(n)
 
 
 def get_words(text: Iterable[str]) -> str:
@@ -71,7 +79,7 @@ def strip_tags(lines: Iterable[str]):
             more_text = tag_ending_pos != -1
 
 
-def strip_comments(html: str):
+def strip_comments(html: str) -> Iterable[str]:
     current_position = skip_doctype(html)
     more_text = True
     while more_text:
@@ -91,17 +99,16 @@ def skip_doctype(text: str):
 
 
 if __name__ == "__main__":
-    with request.urlopen(sys.argv[1]) as response:
-        text = response.read().decode(response.headers.get_content_charset())
-        print(
-            count_words(
-                get_words(
-                    strip_tags(
-                        strip_comments(
-                            text
-                        )
+    text = get_page_content(sys.argv[1])
+    print(
+        get_top_n_words(
+            get_words(
+                strip_tags(
+                    strip_comments(
+                        text
                     )
                 )
             )
         )
+    )
 
